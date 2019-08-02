@@ -1,0 +1,7 @@
+{
+  "name": "nintendodnstest",
+  "version": "1.0.0",
+  "description": "Checks if a DNS Server is sucessfully blocking connections made to Nintendo",
+  "main": "app.js",
+  "author": "Jamb"
+}
