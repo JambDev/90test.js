@@ -9,3 +9,5 @@
 ### Usage
 Clone this repository and run `` node .`` through the command line<br>
 If the output contains no red in it, 90dns is functioning properly
+
+<img src="https://github.com/JambDev/90test.js/raw/master/screenshot.png">
