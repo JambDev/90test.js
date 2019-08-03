@@ -7,5 +7,5 @@
 ### Requirements
 - <a href="https://nodejs.org/en/download/">Node.js</a>
 ### Usage
-Clone this repository and run `` node .`` through command line<br>
-If there is no red text outputted that means 90DNS is working just fine
+Clone this repository and run `` node .`` through the command line<br>
+If the output contains no red in it, 90dns is functioning properly
