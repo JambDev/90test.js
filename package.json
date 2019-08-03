@@ -1,5 +1,5 @@
 {
-  "name": "nintendodnstest",
+  "name": "90test.js",
   "version": "1.0.0",
   "description": "Tests if 90DNS is sucessfully blocking connections made to Nintendo",
   "main": "app.js",
