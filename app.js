@@ -104,14 +104,15 @@ function isValidIPv4(server) {
 
 /**
  * Runs checks
- * @param {string} server DNS Server to check
+ * @param {string} server Primary DNS Server
+ * @param {string} server2 Secondary DNS Server
  */
 function dnsCheck(server, server2) {
     if (!isValidIPv4(server) || !isValidIPv4(server2))
         return;
     const dns = require('dns');
     dns.setServers([server, server2]);
-    console.log(ColorMap.FgWhite + "Using DNS Server: " + ColorMap.FgCyan + server);
+    console.log(ColorMap.FgWhite + "Using DNS Servers: " + ColorMap.FgCyan + server + ", " + server2);
     for (let target in DomainsToCheck) {
         var domains = DomainsToCheck[target];
         if (!Array.isArray(domains))
