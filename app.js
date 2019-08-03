@@ -1,9 +1,3 @@
-const readline = require('readline');
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-});
-rl.close();
 const ColorMap = {
     Reset: "\x1b[0m",
     Bright: "\x1b[1m",
@@ -33,25 +27,54 @@ const ColorMap = {
 };
 var actualLog = console.log;
 console.log = (message) => actualLog(message + ColorMap.Reset);
-const ServersToCheck = [
-
-];
-
-const Settings = {
-    "90dns": true
+var DomainsToCheck = {
+    "127.0.0.1": [
+        // meganukebmp's Switch_90DNS_tester hostnames
+        "nintendo.com",
+        "nintendo.net",
+        "nintendo.jp",
+        "nintendo.co.jp",
+        "nintendo.co.uk",
+        "nintendo-europe.com",
+        "nintendowifi.net",
+        "nintendo.es",
+        "nintendo.co.kr",
+        "nintendo.tw",
+        "nintendo.com.hk",
+        "nintendo.com.au",
+        "nintendo.co.nz",
+        "nintendo.at",
+        "nintendo.be",
+        "nintendods.cz",
+        "nintendo.dk",
+        "nintendo.de",
+        "nintendo.fi",
+        "nintendo.fr",
+        "nintendo.gr",
+        "nintendo.hu",
+        "nintendo.it",
+        "nintendo.nl",
+        "nintendo.no",
+        "nintendo.pt",
+        "nintendo.ru",
+        "nintendo.co.za",
+        "nintendo.se",
+        "nintendo.ch",
+        "potato.nintendo.com",
+        
+        // 90dnstester.py
+        "sun.hac.lp1.d4c.nintendo.net",
+    ],
+    "95.216.149.205": ["90dns.test", "conntest.nintendowifi.net", "ctest.cdn.nintendo.net"]
 };
 
-function compare(ip1, ip2) {
-    
-}
-
-const Expected90DNS = "95.216.149.205";
 
 function fatal(msg) {
-    console.log(ColorMap.BgRed + ColorMap.FgWhite + "FATAL: " + msg);
+    console.log(ColorMap.BgRed + ColorMap.FgYellow + "FATAL: " + msg);
 }
 
-function validateIPv4(server) {
+// TODO: Add more checks if possible (perhaps check if there are only numbers and periods)
+function isValidIPv4(server) {
     if (server == null) {
         fatal("Null DNS server");
         return false;
@@ -79,40 +102,36 @@ function validateIPv4(server) {
     return true;
 }
 
-
 /**
  * Runs checks
  * @param {string} server DNS Server to check
  */
-function dnsCheck(server) {
-    if (!validateIPv4(server))
+function dnsCheck(server, server2) {
+    if (!isValidIPv4(server) || !isValidIPv4(server2))
         return;
     const dns = require('dns');
-    dns.setServers([server, server]);
+    dns.setServers([server, server2]);
     console.log(ColorMap.FgWhite + "Using DNS Server: " + ColorMap.FgCyan + server);
-    if (Settings["90dns"]) {
-        dns.resolve("90dns.test", function (err, address) {
-            if(Array.isArray(address))
-                address = address[0];
-            if (err == null && address == Expected90DNS)
-                console.log(ColorMap.FgMagenta + "90dns.test" + ColorMap.FgGreen + " => " + ColorMap.FgGreen + Expected90DNS);
-            else {
-                if (err != null)
-                    fatal("Failed to resolve 90dns.test");
-                else
-                    fatal("90dns.test => " + address + " instead of " + Expected90DNS);
-                process.exit();
-            }
-        });
-    }
-    for (var key in Object.keys(ServersToCheck)) {
-        var value = ServersToCheck[key];
-        if (value == ServersToCheck.Localhost) {
-
-            continue;
+    for (let target in DomainsToCheck) {
+        var domains = DomainsToCheck[target];
+        if (!Array.isArray(domains))
+            domains = [domains];
+        for (let index in domains) {
+            let domainToCheck = domains[index];
+            dns.resolve(domainToCheck, function (err, address) {
+                if (Array.isArray(address))
+                    address = address[0];
+                if (err == null && address == target)
+                    console.log(ColorMap.FgYellow + domainToCheck + ColorMap.FgGreen + " => " + ColorMap.FgGreen + target);
+                else {
+                    if (err != null)
+                        fatal("Failed to resolve " + domainToCheck);
+                    else
+                        console.log(ColorMap.FgYellow + domainToCheck + " => " + ColorMap.FgRed + address);
+                }
+            }, domainToCheck);
         }
-
     }
 }
-// 163.172.141.219
-dnsCheck("127.0.0.1:53");
+
+dnsCheck("163.172.141.219", "45.248.48.62");
