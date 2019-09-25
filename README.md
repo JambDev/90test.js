@@ -8,6 +8,6 @@
 - <a href="https://nodejs.org/en/download/">Node.js</a>
 ### Usage
 Clone this repository and run `` node .`` through the command line<br>
-If the output contains no red in it, 90dns is functioning properly
+If the output contains no red in it, 90dns is working great on your end
 
 <img src="https://github.com/JambDev/90test.js/raw/master/screenshot.png">
