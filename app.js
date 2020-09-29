@@ -61,6 +61,9 @@ var DomainsToCheck = {
         "nintendo.se",
         "nintendo.ch",
         "potato.nintendo.com",
+        "nintendoswitch.com",
+        "nintendoswitch.com.cn",
+        "nintendoswitch.cn",
         
         // 90dnstester.py
         "sun.hac.lp1.d4c.nintendo.net",
